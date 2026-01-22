@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "806273053476",
+    "project_id": "teamgrid-f812a",
+    "storage_bucket": "teamgrid-f812a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806273053476:android:ebb38c28c2f92db8e5f9b1",
+        "android_client_info": {
+          "package_name": "com.example.teamgrid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfoGjr-Z_GoeOHwUnJI2lfSKi-b53KvOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
