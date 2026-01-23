@@ -36,11 +36,7 @@ class AppRoutes {
         return _buildRoute(const PmDashboardPage());
 
       case employeeDashboard:
-        final args = settings.arguments as Map<String, dynamic>?;
-
-        return _buildRoute(
-          EmployeeDashboardPage(userName: args?['name'] ?? 'Employee'),
-        );
+        return _buildRoute(const EmployeeDashboardPage());
 
       case manageEmployees:
         return _buildRoute(const ManageEmployeesPage());

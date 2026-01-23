@@ -13,6 +13,7 @@ class AdminDashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
+        backgroundColor: Colors.grey[50],
         centerTitle: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +128,8 @@ class AdminDashboard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Card(
-        elevation: 4,
+        elevation: 2,
+        color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -6,8 +6,7 @@ import 'package:teamgrid/pages/Auth/auth_service.dart';
 import 'package:teamgrid/routes/app_rouutes.dart';
 
 class EmployeeDashboardPage extends StatefulWidget {
-  final String userName;
-  const EmployeeDashboardPage({super.key, required this.userName});
+  const EmployeeDashboardPage({super.key});
 
   @override
   State<EmployeeDashboardPage> createState() => _EmployeeDashboardPageState();
@@ -15,6 +14,36 @@ class EmployeeDashboardPage extends StatefulWidget {
 
 class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
   final String _currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+  String userName = 'Employee';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserName();
+  }
+
+  Future<void> _fetchUserName() async {
+    if (_currentUserId.isEmpty) return;
+
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_currentUserId)
+          .get();
+
+      if (userDoc.exists && mounted) {
+        var data = userDoc.data() as Map<String, dynamic>;
+        setState(() {
+          userName = data['name'] ?? 'Employee';
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => userName = "Error Loading Name");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +58,13 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
           children: [
             const Text(
               "Workspace Saya",
-              style: TextStyle(fontSize: 14, color: Colors.black54),
+              style: TextStyle(fontSize: 12, color: Colors.black54),
             ),
             Text(
-              "Hi, ${widget.userName}",
+              "Hi, $userName Sekarang ${DateFormat.yMMMMd().format(DateTime.now())}",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 14,
                 color: Colors.black,
               ),
             ),
@@ -60,7 +89,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // --- 1. RINGKASAN KERJA (Summary Cards) ---
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collectionGroup('team_members')
@@ -70,17 +98,13 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
                 if (!snapshot.hasData) return const SizedBox();
 
                 var myTasks = snapshot.data!.docs;
-                // Asumsi: Kita nanti butuh field 'status' di sub-collection team_members untuk task specific
-                // Karena struktur sekarang 'team_members' adalah alokasi project, kita anggap itu sebagai "Tugas Besar"
 
-                // Hitung project yang aktif (Deadline belum lewat)
                 int activeProjects = myTasks.where((doc) {
                   var data = doc.data() as Map<String, dynamic>;
                   DateTime? end = (data['end_date'] as Timestamp?)?.toDate();
                   return end != null && end.isAfter(DateTime.now());
                 }).length;
 
-                // Hitung total workload
                 int totalLoad = 0;
                 for (var doc in myTasks) {
                   totalLoad += (doc['workload'] ?? 0) as int;
@@ -117,7 +141,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
             ),
             const SizedBox(height: 10),
 
-            // --- 2. DAFTAR TUGAS (TASK LIST) ---
             StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collectionGroup('team_members')
@@ -131,7 +154,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
                   return _buildEmptyState();
                 }
 
-                // Sorting manual: Deadline terdekat di atas
                 var tasks = snapshot.data!.docs;
                 tasks.sort((a, b) {
                   DateTime d1 = (a['end_date'] as Timestamp).toDate();
@@ -156,7 +178,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
                         .toDate();
                     DateTime endDate = (data['end_date'] as Timestamp).toDate();
 
-                    // Status Logika Sederhana (Berdasarkan Tanggal)
                     String status = "Upcoming";
                     Color statusColor = Colors.grey;
                     DateTime now = DateTime.now();
@@ -169,7 +190,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
                       statusColor = Colors.red;
                     }
 
-                    // Sisa Hari
                     int daysLeft = endDate.difference(now).inDays;
 
                     return Container(
@@ -253,7 +273,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
 
                             const SizedBox(height: 16),
 
-                            // Baris Progress / Workload
                             Row(
                               children: [
                                 Expanded(
@@ -297,7 +316,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
                                   ),
                                 ),
                                 const SizedBox(width: 16),
-                                // Tombol Aksi Cepat
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.black,
@@ -311,7 +329,6 @@ class _EmployeeDashboardPageState extends State<EmployeeDashboardPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    // Disini nanti bisa masuk ke detail task / lapor progress
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(

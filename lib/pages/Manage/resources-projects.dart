@@ -44,6 +44,7 @@ class _ResourceMonitorProjectsPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text("Monitoring Projects"),
         actions: [
           IconButton(
@@ -221,14 +222,14 @@ class _ResourceMonitorProjectsPageState
           FloatingActionButton(
             onPressed: () =>
                 Navigator.pushNamed(context, AppRoutes.manageProjects),
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.lightBlue,
             child: const Icon(Icons.edit, color: Colors.white),
           ),
           const SizedBox(height: 12),
           FloatingActionButton.extended(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.benchList),
             label: const Text("Who Is Free Now?"),
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.lightBlue,
             foregroundColor: Colors.white,
             extendedPadding: const EdgeInsets.symmetric(horizontal: 15),
           ),

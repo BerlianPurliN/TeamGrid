@@ -268,7 +268,8 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
         _startDate == null ||
         _deadline == null ||
         _clientNameController.text.isEmpty ||
-        (userRole == 'Admin' || userRole == 'PM' && _valueController.text.isEmpty)) {
+        (userRole == 'Admin' ||
+            userRole == 'PM' && _valueController.text.isEmpty)) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -320,7 +321,9 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
       'payment_status': userRole == 'Admin' || userRole == 'PM'
           ? _selectedPaymentStatus
           : "Belum Lunas",
-      'total_termin_options': userRole == 'Admin' || userRole == 'PM' ? _totalTerminOption : 0,
+      'total_termin_options': userRole == 'Admin' || userRole == 'PM'
+          ? _totalTerminOption
+          : 0,
       'created_at': FieldValue.serverTimestamp(),
     });
 
@@ -551,12 +554,14 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) {
           return AlertDialog(
+            backgroundColor: Colors.white,
             title: const Text("Filter Status Proyek"),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: _allStatuses.map((status) {
                   return CheckboxListTile(
+                    activeColor: Colors.lightBlue,
                     title: Text(status),
                     value: tempSelected.contains(status),
                     onChanged: (bool? checked) {
@@ -574,10 +579,15 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
             ),
             actions: [
               TextButton(
+                style: TextButton.styleFrom(foregroundColor: Colors.black),
                 onPressed: () => Navigator.pop(context),
                 child: const Text("Batal"),
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                ),
                 onPressed: () {
                   setState(() {
                     _selectedStatusFilters = tempSelected;
@@ -596,7 +606,9 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -758,7 +770,8 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
                         horizontal: 16,
                         vertical: 8,
                       ),
-                      elevation: 3,
+                      elevation: 1,
+                      color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -888,9 +901,10 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
                 );
               },
             ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddProjectForm,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.lightBlue,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );

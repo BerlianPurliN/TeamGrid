@@ -548,6 +548,7 @@ class _ManageEmployeesPageState extends State<ManageEmployeesPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context),
@@ -556,8 +557,14 @@ class _ManageEmployeesPageState extends State<ManageEmployeesPage> {
           bottom: const TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(icon: Icon(Icons.manage_accounts), text: "Project Managers"),
-              Tab(icon: Icon(Icons.people), text: "Employees"),
+              Tab(
+                icon: Icon(color: Colors.lightBlue, Icons.manage_accounts),
+                text: "Project Managers",
+              ),
+              Tab(
+                icon: Icon(color: Colors.lightBlue, Icons.people),
+                text: "Employees",
+              ),
             ],
           ),
         ),
@@ -568,13 +575,14 @@ class _ManageEmployeesPageState extends State<ManageEmployeesPage> {
             EmployeeListStream(roleFilter: 'Employee'),
           ],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FloatingActionButton(
               onPressed: _showAddEmployeeForm,
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.lightBlue,
               child: const Icon(Icons.add, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -582,7 +590,7 @@ class _ManageEmployeesPageState extends State<ManageEmployeesPage> {
               onPressed: () =>
                   Navigator.pushNamed(context, AppRoutes.benchList),
               label: const Text("Who Is Free Now?"),
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.lightBlue,
               foregroundColor: Colors.white,
               extendedPadding: const EdgeInsets.symmetric(horizontal: 16),
             ),
@@ -646,7 +654,8 @@ class EmployeeListStream extends StatelessWidget {
             final List<dynamic> skills = data['skills'] ?? [];
 
             return Card(
-              elevation: 2,
+              color: Colors.white,
+              elevation: 1,
               margin: const EdgeInsets.only(bottom: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -663,6 +672,12 @@ class EmployeeListStream extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Icon(
+                                Icons.person,
+                                size: 30,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 8),
                               Text(
                                 name,
                                 style: const TextStyle(
@@ -692,7 +707,6 @@ class EmployeeListStream extends StatelessWidget {
                                 )?.showEditForm(doc);
                               },
                             ),
-                            // Tombol Delete
                             IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () {

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -18,13 +19,40 @@ class _PmDashboardPageState extends State<PmDashboardPage> {
 
   late GanttController _ganttController;
 
+  final String _currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+  String userName = 'Employee';
+
   @override
   void initState() {
     super.initState();
+    _fetchUserName();
     _ganttController = GanttController(
       startDate: DateTime.now().subtract(const Duration(days: 3)),
       daysViews: 15,
     );
+  }
+
+  Future<void> _fetchUserName() async {
+    if (_currentUserId.isEmpty) return;
+
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_currentUserId)
+          .get();
+
+      if (userDoc.exists && mounted) {
+        var data = userDoc.data() as Map<String, dynamic>;
+        setState(() {
+          userName = data['name'] ?? 'Employee';
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => userName = "Error Loading Name");
+      }
+    }
   }
 
   @override
@@ -57,7 +85,7 @@ class _PmDashboardPageState extends State<PmDashboardPage> {
               style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
             Text(
-              "Hi, PM! Today is ${DateFormat.yMMMMd().format(DateTime.now())}",
+              "Hi, $userName Sekarang ${DateFormat.yMMMMd().format(DateTime.now())}",
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -124,7 +152,7 @@ class _PmDashboardPageState extends State<PmDashboardPage> {
             ),
 
             SizedBox(
-              height: 500,
+              height: 700,
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('projects')
@@ -309,14 +337,14 @@ class _PmDashboardPageState extends State<PmDashboardPage> {
           FloatingActionButton(
             onPressed: () =>
                 Navigator.pushNamed(context, AppRoutes.manageProjects),
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.lightBlue,
             child: const Icon(Icons.edit, color: Colors.white),
           ),
           const SizedBox(height: 12),
           FloatingActionButton.extended(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.benchList),
             label: const Text("Who Is Free Now?"),
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.lightBlue,
             foregroundColor: Colors.white,
             extendedPadding: const EdgeInsets.symmetric(horizontal: 15),
           ),
@@ -362,7 +390,8 @@ class _PmDashboardPageState extends State<PmDashboardPage> {
         }
 
         return Card(
-          elevation: 2,
+          color: Colors.white,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),

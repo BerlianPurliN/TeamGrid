@@ -16,11 +16,7 @@ class _BenchListPageState extends State<BenchListPage> {
   bool _isLoading = false;
   List<Map<String, dynamic>> _benchList = [];
 
-  final List<String> _roles = [
-    'Backend',
-    'Frontend',    
-    'UI/UX',
-  ];
+  final List<String> _roles = ['Backend', 'Frontend', 'UI/UX'];
 
   @override
   void initState() {
@@ -124,7 +120,6 @@ class _BenchListPageState extends State<BenchListPage> {
         title: const Text("Cari Talent (Bench)"),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 1,
       ),
       body: Column(
         children: [
@@ -224,7 +219,7 @@ class _BenchListPageState extends State<BenchListPage> {
                     icon: const Icon(Icons.search),
                     label: const Text("Cari yang Kosong"),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[800],
+                      backgroundColor: Colors.lightBlue,
                       foregroundColor: Colors.white,
                     ),
                     onPressed: _fetchBenchList,

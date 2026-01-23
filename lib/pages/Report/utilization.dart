@@ -49,7 +49,7 @@ class _UtilizationReportPageState extends State<UtilizationReportPage> {
           .get();
 
       List<QueryDocumentSnapshot> employees = userSnapshot.docs.where((doc) {
-        return (doc.data() as Map<String, dynamic>)['role'] != 'Admin';
+        return (doc.data())['role'] != 'Admin';
       }).toList();
 
       var taskSnapshot = await FirebaseFirestore.instance
@@ -151,6 +151,9 @@ class _UtilizationReportPageState extends State<UtilizationReportPage> {
         elevation: 0.5,
         actions: [
           TextButton.icon(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black,
+            ),
             icon: const Icon(Icons.calendar_month),
             label: Text(DateFormat('MMMM yyyy').format(_selectedMonth)),
             onPressed: () async {
