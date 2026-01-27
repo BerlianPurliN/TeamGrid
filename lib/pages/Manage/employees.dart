@@ -323,7 +323,9 @@ class _ManageEmployeesPageState extends State<ManageEmployeesPage> {
               await _authService.deleteEmployee(uid);
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Data berhasil dihapus")),
+                const SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text("Data berhasil dihapus")),
               );
             },
             child: const Text("Hapus"),
