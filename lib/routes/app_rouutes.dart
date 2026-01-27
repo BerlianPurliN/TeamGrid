@@ -9,6 +9,7 @@ import 'package:teamgrid/pages/Manage/employees.dart';
 import 'package:teamgrid/pages/Manage/resources-employees.dart';
 import 'package:teamgrid/pages/Manage/projects.dart';
 import 'package:teamgrid/pages/Manage/resources-projects.dart';
+import 'package:teamgrid/pages/Report/financial.dart';
 import 'package:teamgrid/pages/Report/utilization.dart';
 
 class AppRoutes {
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String detailProject = '/detail-project';
   static const String benchList = '/bench-list';
   static const String utilizationReport = '/utilization-report';
+  static const String financialReport = '/financial-report';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -64,6 +66,9 @@ class AppRoutes {
 
       case utilizationReport:
         return _buildRoute(const UtilizationReportPage());
+
+      case financialReport:
+        return _buildRoute(const FinancialReportPage());
 
       default:
         return _buildRoute(

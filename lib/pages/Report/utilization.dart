@@ -151,9 +151,7 @@ class _UtilizationReportPageState extends State<UtilizationReportPage> {
         elevation: 0.5,
         actions: [
           TextButton.icon(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.black,
-            ),
+            style: TextButton.styleFrom(foregroundColor: Colors.black),
             icon: const Icon(Icons.calendar_month),
             label: Text(DateFormat('MMMM yyyy').format(_selectedMonth)),
             onPressed: () async {
@@ -204,7 +202,8 @@ class _UtilizationReportPageState extends State<UtilizationReportPage> {
                       ),
                     ],
                   ),
-
+                  const SizedBox(height: 24),
+                  _buildTopUtilizationSection(),
                   const SizedBox(height: 24),
                   const Text(
                     "Detail Utilitas per Divisi",
@@ -287,7 +286,6 @@ class _UtilizationReportPageState extends State<UtilizationReportPage> {
                             ),
                             const SizedBox(height: 10),
 
-                            // Visual Bar
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: LinearProgressIndicator(
@@ -353,6 +351,115 @@ class _UtilizationReportPageState extends State<UtilizationReportPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTopUtilizationSection() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .where('status', isEqualTo: 'Active')
+          .where('role', isNotEqualTo: 'Admin')
+          .snapshots(),
+      builder: (context, userSnapshot) {
+        if (!userSnapshot.hasData)
+          return const Center(child: CircularProgressIndicator());
+
+        return StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collectionGroup('team_members')
+              .snapshots(),
+          builder: (context, taskSnapshot) {
+            if (!taskSnapshot.hasData) return const SizedBox();
+
+            List<Map<String, dynamic>> utilizationList = [];
+
+            for (var userDoc in userSnapshot.data!.docs) {
+              String userId = userDoc.id;
+              String userName = userDoc['name'] ?? 'Unknown';
+
+              int totalWorkload = 0;
+              var myTasks = taskSnapshot.data!.docs.where(
+                (task) => task['employee_id'] == userId,
+              );
+
+              for (var task in myTasks) {
+                totalWorkload += (task['workload'] as int? ?? 0);
+              }
+
+              utilizationList.add({
+                'name': userName,
+                'total': totalWorkload,
+                'taskCount': myTasks.length,
+              });
+            }
+
+            utilizationList.sort((a, b) => b['total'].compareTo(a['total']));
+
+            var top5 = utilizationList.take(5).toList();
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(
+                    "Top 5 User Utilization",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: top5.length,
+                  itemBuilder: (context, index) {
+                    var item = top5[index];
+                    Color statusColor = item['total'] > 100
+                        ? Colors.red
+                        : (item['total'] >= 80 ? Colors.orange : Colors.blue);
+
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: statusColor.withOpacity(0.1),
+                        child: Text(
+                          "${index + 1}",
+                          style: TextStyle(
+                            color: statusColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        item['name'],
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Text("${item['taskCount']} Proyek Berjalan"),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "${item['total']}%",
+                            style: TextStyle(
+                              color: statusColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const Text(
+                            "Load",
+                            style: TextStyle(fontSize: 10, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 

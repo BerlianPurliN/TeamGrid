@@ -465,8 +465,12 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
                     decoration: const InputDecoration(labelText: "Nama Client"),
                   ),
                   TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: _valueController,
-                    decoration: const InputDecoration(labelText: "Nama Client"),
+                    decoration: const InputDecoration(
+                      labelText: "Nilai Proyek",
+                    ),
                   ),
 
                   DropdownButtonFormField<String>(

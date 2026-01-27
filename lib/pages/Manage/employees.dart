@@ -583,12 +583,14 @@ class _ManageEmployeesPageState extends State<ManageEmployeesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FloatingActionButton(
+              heroTag: "btn-1",
               onPressed: _showAddEmployeeForm,
               backgroundColor: Colors.lightBlue,
               child: const Icon(Icons.add, color: Colors.white),
             ),
             const SizedBox(height: 12),
             FloatingActionButton.extended(
+              heroTag: "btn-2",
               onPressed: () =>
                   Navigator.pushNamed(context, AppRoutes.benchList),
               label: const Text("Who Is Free Now?"),

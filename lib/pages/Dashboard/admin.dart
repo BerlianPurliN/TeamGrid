@@ -96,6 +96,14 @@ class AdminDashboard extends StatelessWidget {
                       AppRoutes.utilizationReport,
                     ),
                   ),
+                  _buildMenuCard(
+                    context,
+                    "Laporan Keuangan",
+                    Icons.monetization_on,
+                    Colors.green,
+                    () =>
+                        Navigator.pushNamed(context, AppRoutes.financialReport),
+                  ),
                 ],
               ),
             ),
@@ -109,7 +117,7 @@ class AdminDashboard extends StatelessWidget {
           FloatingActionButton.extended(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.benchList),
             label: const Text("Who Is Free Now?"),
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.lightBlue,
             foregroundColor: Colors.white,
             extendedPadding: const EdgeInsets.symmetric(horizontal: 15),
           ),

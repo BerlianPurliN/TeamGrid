@@ -178,12 +178,14 @@ class _ResourceMonitorEmployeesPageState
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: "btn-1",
             onPressed: () => Navigator.pushNamed(context, AppRoutes.manageProjects),
             backgroundColor: Colors.lightBlue,
             child: const Icon(Icons.edit, color: Colors.white),
           ),
           const SizedBox(height: 12),
           FloatingActionButton.extended(
+            heroTag: "btn-2",
             onPressed: () => Navigator.pushNamed(context, AppRoutes.benchList),
             label: const Text("Who Is Free Now?"),
             backgroundColor: Colors.lightBlue,
