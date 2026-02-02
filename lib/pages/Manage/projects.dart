@@ -264,12 +264,12 @@ class _ManageProjectsPageState extends State<ManageProjectsPage> {
   }
 
   void _saveProject() async {
-    if (_projectNameController.text.isEmpty ||
+    if (_projectNameController.text.trim().isEmpty ||
         _startDate == null ||
         _deadline == null ||
-        _clientNameController.text.isEmpty ||
-        (userRole == 'Admin' ||
-            userRole == 'PM' && _valueController.text.isEmpty)) {
+        _clientNameController.text.trim().isEmpty ||
+        ((userRole == 'Admin' || userRole == 'PM') &&
+            _valueController.text.trim().isEmpty)) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
