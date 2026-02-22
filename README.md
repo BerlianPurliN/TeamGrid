@@ -48,7 +48,7 @@ Sebelum menjalankan proyek ini di mesin lokal, pastikan Anda telah menginstal be
    ```bash
    flutter run
 
---
+---
 
 ## 📂 Susunan Proyek
 TeamGrid/
@@ -62,7 +62,7 @@ TeamGrid/
 ├── pubspec.yaml      # File konfigurasi package/dependencies Flutter
 └── firebase.json     # File konfigurasi Firebase
 
---
+---
 
 ## 💡 Contoh Penggunaan
 
