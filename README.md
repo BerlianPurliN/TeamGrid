@@ -52,11 +52,15 @@ Sebelum menjalankan proyek ini di mesin lokal, pastikan Anda telah menginstal be
 
 ## 📂 Susunan Proyek
 TeamGrid/
-├── android/          # File konfigurasi spesifik Android
-├── ios/              # File konfigurasi spesifik iOS
-├── web/              # File konfigurasi spesifik Web
-├── lib/              # Kode sumber utama aplikasi (Dart)
-│   ├── main.dart     # Entry point aplikasi
+├── android/          # File konfigurasi spesifik Android  
+
+├── ios/              # File konfigurasi spesifik iOS  
+
+├── web/              # File konfigurasi spesifik Web  
+
+├── lib/              # Kode sumber utama aplikasi (Dart)  
+
+│   ├── main.dart     # Entry point aplikasi  
 │   └── ...           # (Folder UI, model, layanan, dsb.)
 ├── assets/           # Folder untuk gambar, ikon, dan font
 ├── pubspec.yaml      # File konfigurasi package/dependencies Flutter
